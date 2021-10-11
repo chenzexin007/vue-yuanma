@@ -1,15 +1,36 @@
 let Vue;
 class Store {
   constructor(options){
-    this._vm = new Vue({
-      data: {
-        $$state: options.state
-      }
-    })
 
     this.mutations = options.mutations
     this.actions = options.actions
+    this._wrapGetter = options.getters
 
+    // getters的使用类似于computed, 但是他又带有参数
+    // 实现思路是： 
+    // 1.使用Vue借鸡生蛋，接用computed
+    // 2.向computed中植入我们的getters的key-function，并且是带state参数的 
+    let computed = {}
+    this.getters = {}
+    const store = this
+
+    Object.keys(this._wrapGetter).forEach(key => {
+      const fn = store._wrapGetter[key]
+      computed[key] = function(){
+        return fn(store.state)
+      }
+      Object.defineProperty(store.getters, key, {
+        get(){
+          return store._vm[key]
+        }
+      })
+    })
+    this._vm = new Vue({
+      data: {
+        $$state: options.state
+      },
+      computed
+    })
     this.commit = this.commit.bind(this)
     this.dispatch = this.dispatch.bind(this)
   }

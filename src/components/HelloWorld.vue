@@ -3,6 +3,7 @@
     <h1>{{ msg }}</h1>
     <div @click="$store.commit('add')">count: {{$store.state.count}}</div>
     <div @click="$store.dispatch('add')">async count: {{$store.state.count}}</div>
+    <div>doubleCount: {{$store.getters.doubleCount}}</div>
     <!-- <p>
       For a guide and recipes on how to configure / customize this project,<br>
       check out the
