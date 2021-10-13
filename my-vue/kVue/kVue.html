@@ -7,18 +7,25 @@
   <title>Document</title>
   <script src="./kVue.js"></script>
   <script>
-    var vue = new kVue({
-      el: '#app',
-      data: {
-        count: 0
-      }
-    })
-    setInterval(() => {
-      vue.count++
-    }, 1000)
+    window.onload = function(){
+      var vue = new kVue({
+        el: '#app',
+        data: {
+          count: 0,
+          testHtml: '<p>我是my-html渲染</p>'
+        }
+      })
+      setInterval(() => {
+        vue.count++
+      }, 1000)
+    }
   </script>
 </head>
 <body>
-  <div id="app">{{count}}</div>
+  <div id="app">
+    <p>{{count}}</p>
+    <p my-text="count"></p>
+    <div my-html="testHtml"></div>
+  </div>
 </body>
 </html>
